@@ -142,6 +142,25 @@ if (this.hardcodedAuthenticationService.authenticate(this.username, this.passwor
     this.invalidLogin = true
 }
 ```
+### Step 32
+- Session storage is used to save one session of a page: user interaction, passwords, etc.
+- No need to import anything as `sessionStorage` is interal property of a web page. You can use it immediately as shown below:
+```
+...
+if (username === 'rtaylor02' && password === '123') {
+      sessionStorage.setItem('authenticatedUser', username)
+      ...
+}
+
+isUserLoggedIn() {
+    let user  = sessionStorage.getItem('authenticatedUser')
+    return !(user === null)
+  }
+```
+- Session storage can be monitored via inspection window of your web page:
+![session storage](./img/session_storage.png)
+
+### Step 34
 
   
 
