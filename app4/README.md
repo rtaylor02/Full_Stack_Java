@@ -9,7 +9,8 @@ Forked repository of this course is [here](https://github.com/rtaylor02/in28minu
 - Use Router class from @Angular/router to do this.
 - Inject router in the component's constructor: 
 ``` constructor login(private router : Router) {}```
-- this.route.navigate(['<component>']), e.g.: ```this.route.navigate(['<component>'])```
+- this.route.navigate(['<component>']), e.g.: ```this.route.navigate(['login'])``` ==> this tells to naviate to login component whose path specified in app.routes.ts:
+![path to login component in app.route.ts](./img/routes.png)
 
 ### Step 19
 - You need to set the parameter in the route path first: ```path: 'welcome/:name', component: WelcomeComponent```. In this case it's 'name'.
@@ -155,12 +156,37 @@ if (username === 'rtaylor02' && password === '123') {
 isUserLoggedIn() {
     let user  = sessionStorage.getItem('authenticatedUser')
     return !(user === null)
-  }
+}
+
+logout() {
+    sessionStorage.removeItem(this.authenticatedUser);
+}
 ```
 - Session storage can be monitored via inspection window of your web page:
 ![session storage](./img/session_storage.png)
 
-### Step 34
+### Step 35
+- To secure components, e.g. hide it when user's not logged in, you can create a service that implements interface CanActivate as shown below:
+```
+@Injectable({
+  providedIn: 'root'
+})
+export class RouteGuardService implements CanActivate {
+
+  constructor(private hardcodedAuthentication : HardcodedAuthenticationService) { }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
+    return this.hardcodedAuthentication.isUserLoggedIn()
+  }
+}
+
+```
+- Apply the code below in app.routes.ts for protection of the component. canActivate properties here is an array as it can be configured for several conditions.
+```
+...
+{ path: 'welcome/:name', component: WelcomeComponent, canActivate:[RouteGuardService]},
+...
+```
 
   
 
