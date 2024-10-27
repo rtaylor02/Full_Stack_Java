@@ -188,5 +188,17 @@ export class RouteGuardService implements CanActivate {
 ...
 ```
 
+### Step 41-49
+- ***DispatcherServlet*** is a (Spring Boot background) class that knows how to handle request. This includes passing the request to appropriate beans to be translated, processed and sent back in the correct format as a response. For example, it talks to Jackson for the conversion of the Java object to JSON so it can properly be digested by the client.
+- ```@GetMapping("/hello)``` = ```@RequestMapping(method = RequestMethod.GET, path = "/hello")``` 
+- ```@PathVariable``` ==> to bind path variable to Java String:
+```
+@GetMapping("/hello/{name}")
+public HelloBean greet(@PathVariable String name) {
+  return new HelloBean(String.format("Hello, %s", name));
+}
+```
+
+
   
 
