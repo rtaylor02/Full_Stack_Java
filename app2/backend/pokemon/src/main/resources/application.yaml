@@ -1,7 +1,6 @@
 spring:
   main:
     banner-mode: off
-
   jpa:
     hibernate:
       ddl-auto: none
@@ -10,14 +9,12 @@ spring:
         jdbc:
           lob:
             non_contextual_creation:true
-
   datasource:
     initialization-mode: always
     platform: postgres
     url: jdbc:postgresql://localhost:5432/pokemon
     username: postgres
     password: root
-
 
 logging:
   level:

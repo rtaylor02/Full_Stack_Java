@@ -4,3 +4,6 @@ Tech stack:
 - Java
 - PostgreSQL
 - ReactJS
+
+Adjustment to the structures: using Hexagonal Architecture (introduced in Alan Mellor's book [TDD with Java](https://learning.oreilly.com/library/view/test-driven-development-with/9781803236230/)).
+
