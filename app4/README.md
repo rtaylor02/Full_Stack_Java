@@ -143,6 +143,8 @@ if (this.hardcodedAuthenticationService.authenticate(this.username, this.passwor
     this.invalidLogin = true
 }
 ```
+- NOTE: always refer to instance object using ***this.<object_name>***.
+
 ### Step 32
 - Session storage is used to save one session of a page: user interaction, passwords, etc.
 - No need to import anything as `sessionStorage` is interal property of a web page. You can use it immediately as shown below:
@@ -199,6 +201,43 @@ public HelloBean greet(@PathVariable String name) {
 }
 ```
 
+### Step 50
+- To create a button with event, 2 steps:
+1) In .html file, create a button with event click pointing at the function in the .ts file
+```
+<div class="container">
+  Click here to be greeted (again) 
+  <button (click)="getWelcomeMessage()" class="btn btn-success">Click me</button>
+</div>
+```
+2) In .ts file, create the function with the same name referenced in step 1.
+```
+getWelcomeMessage() {
+  console.log("hello There!")
+}
+```
 
+### Step 51 (& 53)
+- To make a GET request, use HttpClientModule class method ***get()*** specifying 2 things:
+  1. the response object. In the example below it's HelloWorldBean
+  2. the url. In the example below, it's http://localhost:8080/hello-from-bean
+```
+import { HttpClient } from '@angular/common/http';
+...
+return this.httpClient.get<HelloWorldBean>("http://localhost:8080/hello-from-bean")
+...
+export class HelloWorldBean {
+  constructor(public message : string) {}
+}
+```
+
+### Step 52
+- Observable is an async object that is returned by HttpClient's ***get<T>()*** method.
+- To bind the observable object returned to a class, we need to call ***subscribe()*** method to that observable object specifying a callback function on what to do with the response with arrow function (=>):
+```
+this.service.getWelcomeDataBean().subscribe(response => console.log(response.message))
+```
   
+### Step 54
+- 
 
