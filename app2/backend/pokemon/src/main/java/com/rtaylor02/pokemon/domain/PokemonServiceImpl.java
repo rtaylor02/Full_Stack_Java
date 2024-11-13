@@ -4,7 +4,6 @@ import com.rtaylor02.pokemon.domain.port.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
