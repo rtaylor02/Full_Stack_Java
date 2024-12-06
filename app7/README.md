@@ -69,5 +69,27 @@ This is my own version of course from Chad Darby on Udemy: [Build a Full Stack A
       }
     }
     ```  
-  ***NOTE***: `[todoRows, setTodoRows]` is deconstructored array definition. `[...todoRows, newTodo]` is using deconstructoring operator `...`.  
-- 
+  ***NOTE***: `[todoRows, setTodoRows]` is deconstructed array definition. `[...todoRows, newTodo]` is using deconstruction operator `...`.  
+  ***NOTE***: useState is an alias to a function that takes initial value and an update function, almost like reduce(T id, Bin.Op accu) in Java Stream.
+- onChange event handler can be assigned to an input or textarea element to handle user's input:
+    ```
+    function NewTodoForm() {
+      const assignedChange = event => {
+        console.log('assigned: ', event.target.value);
+      }
+    ...
+        <div className="mb-3">
+            <label className="form-label">Assigned</label>
+            <input type="text" className="form-control" required onChange={assignedChange}></input>
+        </div>
+    ...
+    }
+    ```  
+    You can use arrow function in onChange() arg to make your code shorter:
+    ```
+    <input type="text" onChange={event => console.log('assigned: ', event.target.value)}></input>
+    ```  
+    Combining it with useState:
+```
+
+```

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import TodoTable from './components/TodoTable';
+import NewTodoForm from './components/NewTodoForm';
 
 function App() {
 
@@ -11,9 +12,9 @@ function App() {
     {rowNumber: 4, rowDescription: 'Charge car', rowAssigned: 'Skibidi Toilet'}, 
   ])
 
-  const addTodo = () => {
+  const addTodo = (description, assigned) => {
     if (todoRows.length > 0) {
-      const newTodo = {rowNumber: (todoRows.length + 1), rowDescription: 'New todo', rowAssigned: 'user'}
+      const newTodo = {rowNumber: (todoRows.length + 1), rowDescription: description, rowAssigned: assigned}
       setTodoRows(todoRows => [...todoRows, newTodo])
     }
   }
@@ -25,6 +26,7 @@ function App() {
         <div className='card-body'>
             <TodoTable todos={todoRows}/>
             <button className="btn btn-primary" onClick={addTodo}>Add todo item</button>
+            <NewTodoForm addTodo={addTodo} />
         </div>
 
       </div>
