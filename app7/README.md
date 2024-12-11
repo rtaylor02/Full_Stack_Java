@@ -105,6 +105,7 @@ This is my own version of course from Chad Darby on Udemy: [Build a Full Stack A
     ```
     <input type="text" onChange={event => console.log('assigned: ', event.target.value)}></input>
     ```  
+
     Combining it with useState:
     ```
     import React, {useState} from "react";
@@ -118,6 +119,7 @@ This is my own version of course from Chad Darby on Udemy: [Build a Full Stack A
         <textarea className="form-control" rows={3} required onChange={event => setDesc(event.target.value)} value={desc}></textarea>
     }
     ```  
+
 - Complete code so far foo `useState`: 
   App.js:
   ```
@@ -196,4 +198,154 @@ This is my own version of course from Chad Darby on Udemy: [Build a Full Stack A
   export default NewTodoForm;
   ```  
 
-- 
+- Unique Id assignment ==> Resolution to the warning below.
+  ![warning_key_for_list](./readme_images/warning_key_for_list.png)
+  ![solution_to_warning_key](s./readme_images/solution_to_warning_key.png)
+
+- With props, you can also pass a function as shown below:
+  ```
+  function TodoRowItem(props) {
+    return (
+      <tr onClick={() => props.deleteTodoFunc(props.rowNum)}>
+          <th scope='row'>{props.rowNum}</th>
+          <td>{props.rowDesc}</td>
+          <td>{props.rowAsg}</td>
+      </tr>
+    )
+  }
+
+  export default TodoRowItem;
+  ```  
+
+## Typescript
+- More details: [typescriptlang.org](www.typescriptlang.org)
+
+- Typescript is 'transpiled' into JavaScript by command `tsc`: `$ tsc mycode.ts`. You can then run the resulting JS file: `$ node mycode.js`.
+  ![hello_typescript](./readme_images/hello_typescript.png)
+
+- To prevent creation of .js file even in compilation error, use flag `-noEmitOnError`, e.g.: `$ tsc -noEmitOnError mycode.ts`.
+
+- Defining variables: `let <var_name> : <type> = <init_value>;`, e.g. `let x : number = 23.3; let name : string = 'Rod'`.  
+NOTE:   
+  - string can be ' or ". Type `any` can be assigned to any type bypassing type-check - particularly useful for generics in list, array, etc.
+  - semicolon at end of statement ( ; ) is optional
+
+- Template string: better than clunky concatenation. ***NOTE***: backtick (`) is used. Sample:
+  ```
+  let name : string = 'Rod'; // Single quote, or double quote for strings
+  console.log(`Hello ${name}! How are you?`); // Backtick! 
+  ```
+
+- Loops and arrays:
+  ```
+  let numbers : number[] = [11, 22, 33]
+  for (let i = 0; i < numbers.length; i++) {
+    console.log(numbers[i]);
+  }
+  numbers.push(44); // NOTE: arrays are growable
+
+  for (let i of numbers) {
+    console.log(i);
+  }
+  ```
+
+- Class definition:
+  ```
+  class MyClass {
+    name : string; // public by default
+    private grade : number; // Accessible only within class
+    protected member1 : string; // Accessible only within class and subclass
+
+    constructor(name : string, grade : number, member1 : string) {
+        this.name = name;
+        this.grade = grade;
+        this.member1 = member1;
+    }
+
+    // getters and setters
+    public getName() : string { return this.name; }
+    public setName(name : string) : void { this.name = name; }
+  }
+
+  let classA = new MyClass("Taekwon-do", 100, "Robi");
+
+  console.log(classA.name); // "Taekwon-do"
+  classA.setName("Karate");  
+  console.log(classA.getName()); // "Karate"
+  // console.log(classA.grade); // CE, but can run!
+  // console.log(classA.member1); // CE, but can run!
+  ```
+
+  With ES5 and above, you can use accessors (setters and getters - more common and widely used):
+  ```
+  class Person {
+    private _firstName : string;
+    private _lastName : string;
+
+    constructor(firstName : string, lastName : string) {
+        this._firstName = firstName;
+        this._lastName = lastName;
+    }
+
+    get firstName() : string { return this._firstName; }
+    set firstName(firstName : string) { this._firstName = firstName; }
+    get lastName() : string { return this._lastName }
+    set lastName(lastName : string) { this._lastName = lastName; }
+  }
+
+  let one = new Person("Darren", "Brown");
+  console.log(`one ==> ${one.firstName} ${one.lastName}`); // Notice no paranthesis when calling accessors
+  ```
+  > To compile with ES5 and above: `$ tsc --target ES5 --noEmitOnError <fileName.ts>`
+
+- Instead of using flags in compiling, use `tsconfig.json` as your configuration file: `$ tsc --init`. 
+  ```
+  {
+    "compilerOptions": {
+      "target": "es2016", 
+      "noEmitOnError": true,
+      ...
+    }
+  }
+  ```
+  From here, you can compile simply by using `$ tsc`.
+
+- `$ tsc --build --clean `: just like in maven to build and clean project (incl. removing .js result file)
+
+- Parameter properties ==> properties + constructor parameters:
+  ```
+  class AnotherPerson {
+    constructor(private _firstName : string, private _lastName: string) {}
+    get firstName() : string { return this._firstName; }
+    get lastName() : string { return this._lastName; }
+    set firstName(firstName : string) { this.firstName = firstName; }
+    set lastName(lastName : string) { this.lastName = lastName; }
+  }
+
+  let two = new AnotherPerson("Bobby", "Kennedy");
+  console.log(`two ==> ${two.firstName} ${two.lastName}`);
+  ```
+
+- export/import ==> to allow a TS file to use other TS files. Technically it 'includes' ***ALL*** the other file contents into the importing file
+  ```
+  // AnotherPerson.ts
+  export class AnotherPerson {
+    constructor(private _firstName : string, private _lastName: string) {}
+    ...
+  }
+
+  // Driver.ts
+  import { AnotherPerson } from "./mycode";
+
+  let two = new AnotherPerson("Bobby", "Kennedy");
+  console.log(`two ==> ${two.firstName} ${two.lastName}`);
+  ```
+  Result (see that 4 previous lines are from imported file):
+  ![alt text](./readme_images/result.png)
+
+## Inheritance in TS
+- Like Java, TS can only extend 1 class but implement multiple classes.
+
+- For subclass, you need to call parent's constructor in subclass's constructor by `super(<params>)`:
+
+- Sample code:
