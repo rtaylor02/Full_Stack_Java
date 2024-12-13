@@ -344,8 +344,157 @@ NOTE:
   ![alt text](./readme_images/result.png)
 
 ## Inheritance in TS
-- Like Java, TS can only extend 1 class but implement multiple classes.
+- Like Java, TS can only extend 1 class but implement multiple interfaces.
 
 - For subclass, you need to call parent's constructor in subclass's constructor by `super(<params>)`:
 
 - Sample code:
+  ```
+  export interface Thing {
+    shout():string;
+  }
+  ```
+  ```
+  // Shape.ts
+  import { Thing } from "./Thing";
+
+  export abstract class Shape{
+      constructor(private _x: number, private _y: number) {}
+      public get x(): number { return this._x; }
+      public get y(): number { return this._y; }
+      public set x(x: number) { this._x = x; }
+      public set y(y: number) { this._y = y; }
+      public getInfo(): string { return `x = ${this._x}, y = ${this._y} ==> area = ${this.calculateArea()}`; }
+      public abstract calculateArea(): number;
+  }
+  ```
+  ```
+  // Rectangle.ts
+  import { Shape } from "./Shape";
+  import { Thing } from "./Thing";
+
+  export class Rectangle extends Shape implements Thing {
+      constructor(x: number, y: number, private _width : number, private _length : number) {
+          super(x, y);
+          this._length = _length;
+          this._width = _width;
+      }
+      public get length():number { return this._length; }
+      public set length(length:number) { this._length = length; }
+      public get width():number { return this._width; }
+      public set width(width:number) { this._width = width; }
+      public getInfo():string { return `${this.shout()}` + super.getInfo() + `, length = ${this._length}, width = ${this._width} ==> area = ${this.calculateArea()}`; }
+      public calculateArea(): number { return this._length * this._width; }
+      public shout(): string { return "Rectangle ==> " }
+  }
+  ```
+  ```
+  // Circle.ts
+  import { Shape } from "./Shape";
+  import { Thing } from "./Thing";
+
+  export class Circle extends Shape implements Thing {
+      constructor(_x : number, _y : number, private _radius : number) { 
+          super(_x, _y); 
+          this._radius = _radius;
+      }
+      
+      get radius() : number { return this._radius; }
+      set radius(radius : number) { this._radius = radius; }
+      getInfo() : string { return `${this.shout()}` + super.getInfo() + `, radius = ${this._radius} ==> area = ${this.calculateArea()}`; }
+      calculateArea(): number { return Math.PI * Math.pow(this._radius, 2); }
+      shout(): string { return "Circle ==> "; }
+  }
+  ```
+  ```
+  // Driver.ts
+  import { Circle } from "./Circle";
+  import { Rectangle } from "./Rectangle";
+
+  let circle = new Circle(1, 2, 3);
+  let rectangle = new Rectangle(11, 22, 33, 44);
+  console.log(circle.getInfo());
+  console.log(rectangle.getInfo());
+  ```
+  Or, using array and loop:
+  ```
+  import { Circle } from "./Circle";
+  import { Rectangle } from "./Rectangle";
+  import { Shape } from "./Shape";
+
+  let shapes:Shape[] = [];
+  shapes.push(new Circle(1, 2, 3));
+  shapes.push(new Rectangle(11, 22, 33, 44));
+
+  for (let shape of shapes) {
+      console.log(shape.getInfo());
+  }
+  ```
+  Result:
+  ![result_inheritance](./readme_images/result_inheritance.png)
+
+- Abstract class sample:
+  ```
+  // Shape.ts
+  export abstract class Shape {
+    constructor(private _x: number, private _y: number) {}
+    public get x(): number { return this._x; }
+    public get y(): number { return this._y; }
+    public set x(x: number) { this._x = x; }
+    public set y(y: number) { this._y = y; }
+    public getInfo(): string { return `x = ${this._x}, y = ${this._y} ==> area = ${this.calculateArea()}`; }
+    public abstract calculateArea(): number;
+  }
+  ```
+  ```
+  // Circle.ts
+  import { Shape } from "./Shape";
+
+  export class Circle extends Shape {
+      constructor(_x : number, _y : number, private _radius : number) { 
+          super(_x, _y); 
+          this._radius = _radius;
+      }
+      
+      public get radius() : number { return this._radius; }
+      public set radius(radius : number) { this._radius = radius; }
+      public getInfo() : string { return super.getInfo() + `, radius = ${this._radius} ==> area = ${this.calculateArea()}`; }
+      public calculateArea(): number { return Math.PI * Math.pow(this._radius, 2); }
+  }
+  ```
+  ```
+  // Rectangle.ts
+  import { Shape } from "./Shape";
+
+  export class Rectangle extends Shape {
+      constructor(x: number, y: number, private _width : number, private _length : number) {
+          super(x, y);
+          this._length = _length;
+          this._width = _width;
+      }
+      
+      public get length():number { return this._length; }
+      public set length(length:number) { this._length = length; }
+      public get width():number { return this._width; }
+      public set width(width:number) { this._width = width; }
+      public getInfo():string { return super.getInfo() + `, length = ${this._length}, width = ${this._width} ==> area = ${this.calculateArea()}`; }
+      public calculateArea(): number { return this._length * this._width; }
+      
+  }
+  ```
+  ```
+  // Driver.ts
+  import { Circle } from "./Circle";
+  import { Rectangle } from "./Rectangle";
+  import { Shape } from "./Shape";
+
+  let shapes:Shape[] = [];
+  shapes.push(new Circle(1, 2, 3));
+  shapes.push(new Rectangle(11, 22, 33, 44));
+
+  for (let shape of shapes) {
+      console.log(shape.getInfo());
+  }
+  ```
+
+- 
